@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Groundswell — Product Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #d0d0dc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      gap: 1.5rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Download button toolbar */
+    .toolbar {
+      position: fixed;
+      top: 1.5rem; right: 1.5rem;
+      z-index: 999;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .dl-btn {
+      background: #09090e;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 700;
+      padding: 0.7rem 1.5rem;
+      border-radius: 99px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      transition: opacity 0.15s;
+    }
+
+    .dl-btn:hover { opacity: 0.85; }
+    .dl-btn.loading { opacity: 0.6; cursor: wait; }
+
+    /* A4 page */
+    .page {
+      width: 794px;
+      min-height: 1123px;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Watermark — on every page */
+    .wm {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .wm-inner {
+      transform: rotate(-30deg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0.045;
+    }
+
+    .wm-wave svg { width: 120px; }
+    .wm-text {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: #6c5ef6;
+      white-space: nowrap;
+    }
+
+    /* Page content wrapper — sits above watermark */
+    .pc { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; }
+
+    /* ── COVER PAGE ── */
+    .cover-page { background: #09090e; }
+
+    .cover-page .wm-inner { opacity: 0.06; }
+    .cover-page .wm-text { color: #ffffff; }
+    .cover-page .wm-wave path { stroke: #fff; }
+
+    .cover-top {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 5rem 3rem;
+    }
+
+    .cover-logo svg { height: 52px; margin-bottom: 4rem; }
+
+    .cover-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(108,94,246,0.25);
+      border: 1px solid rgba(108,94,246,0.4);
+      color: #a89af8;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 99px;
+      margin-bottom: 2rem;
+    }
+
+    .cover-title {
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: -2px;
+      color: #ffffff;
+      line-height: 1.04;
+      margin-bottom: 1.25rem;
+    }
+
+    .cover-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      max-width: 420px;
+    }
+
+    .cover-bottom {
+      padding: 2.5rem 5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cover-meta { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+
+    .cover-chips { display: flex; gap: 0.5rem; }
+
+    .chip {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Cover decorative arc */
+    .cover-arc {
+      position: absolute;
+      right: -80px; top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.06;
+    }
+
+    /* ── OVERVIEW PAGE ── */
+    .page-header {
+      padding: 3rem 3.5rem 2rem;
+      border-bottom: 1px solid #ecedf4;
+    }
+
+    .ph-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6c5ef6;
+      margin-bottom: 0.5rem;
+    }
+
+    .ph-title {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: #09090e;
+      line-height: 1.1;
+    }
+
+    .ph-sub {
+      font-size: 0.875rem;
+      color: #686c80;
+      margin-top: 0.5rem;
+      line-height: 1.65;
+    }
+
+    .page-body { padding: 2rem 3.5rem; flex: 1; }
+
+    /* Overview cards */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .ov-card {
+      background: #f5f5fb;
+      border: 1px solid #ecedf4;
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+
+    .ov-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 0.875rem;
+    }
+
+    .ov-num {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #a2a6b8;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+
+    .ov-title { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; color: #09090e; }
+    .ov-desc { font-size: 0.8rem; color: #686c80; line-height: 1.6; }
+
+    /* Mission block */
+    .mission-block {
+      background: #09090e;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-top: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .mb-stat { text-align: center; flex-shrink: 0; }
+    .mb-num { font-size: 2.25rem; font-weight: 900; letter-spacing: -1px; color: #a89af8; }
+    .mb-label { font-size: 0.65rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem; }
+
+    .mb-divider { width: 1px; height: 50px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+
+    .mb-text { font-size: 0.875rem; color: rgba(255,255,255,0.65); line-height: 1.65; flex: 1; }
+    .mb-text strong { color: #fff; }
+
+    /* ── PRODUCT PAGES ── */
+    .product-header {
+      padding: 2.5rem 3.5rem 1.75rem;
+    }
+
+    .prod-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 99px;
+      margin-bottom: 0.875rem;
+    }
+
+    .prod-title {
+      font-size: 2.25rem;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      color: #09090e;
+      line-height: 1.08;
+      margin-bottom: 0.75rem;
+    }
+
+    .prod-sub {
+      font-size: 0.9rem;
+      color: #686c80;
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    .prod-body { padding: 0 3.5rem 2.5rem; flex: 1; }
+
+    /* Flow diagram */
+    .diagram-wrap {
+      background: #f5f5fb;
+      border: 1px solid #ecedf4;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .diagram-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #a2a6b8;
+      margin-bottom: 1rem;
+    }
+
+    /* Steps breakdown */
+    .steps-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .step-row {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1rem 1.25rem;
+      background: #f5f5fb;
+      border: 1px solid #ecedf4;
+      border-radius: 12px;
+    }
+
+    .sr-num {
+      width: 26px; height: 26px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .sr-content h4 { font-size: 0.875rem; font-weight: 800; margin-bottom: 0.2rem; color: #09090e; }
+    .sr-content p { font-size: 0.78rem; color: #686c80; line-height: 1.55; }
+
+    /* Outcome metrics */
+    .outcomes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .outcome {
+      text-align: center;
+      padding: 1rem 0.5rem;
+      background: #f5f5fb;
+      border: 1px solid #ecedf4;
+      border-radius: 10px;
+    }
+
+    .oc-val { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px; line-height: 1; }
+    .oc-label { font-size: 0.65rem; color: #686c80; margin-top: 0.25rem; }
+
+    /* Page footer */
+    .page-footer {
+      padding: 1rem 3.5rem;
+      border-top: 1px solid #ecedf4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pf-brand { font-size: 0.7rem; font-weight: 700; color: #a2a6b8; letter-spacing: 0.03em; }
+    .pf-page { font-size: 0.7rem; color: #a2a6b8; }
+
+    /* ── CONTACT PAGE ── */
+    .contact-page-body {
+      flex: 1;
+      padding: 3rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cta-block {
+      background: #6c5ef6;
+      border-radius: 20px;
+      padding: 3rem;
+      color: #fff;
+      text-align: center;
+    }
+
+    .cta-block h2 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-block p {
+      font-size: 0.95rem;
+      opacity: 0.75;
+      line-height: 1.7;
+      max-width: 420px;
+      margin: 0 auto 2rem;
+    }
+
+    .cta-email {
+      display: inline-block;
+      background: #fff;
+      color: #6c5ef6;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 0.875rem 2.5rem;
+      border-radius: 99px;
+    }
+
+    .contact-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .cc-item {
+      background: #f5f5fb;
+      border-radius: 14px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .cc-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .cc-title { font-size: 0.825rem; font-weight: 700; margin-bottom: 0.25rem; color: #09090e; }
+    .cc-val { font-size: 0.78rem; color: #686c80; }
+  </style>
+</head>
+<body>
+
+<!-- Download toolbar -->
+<div class="toolbar">
+  <button class="dl-btn" id="dl-btn" onclick="generatePDF()">
+    ↓ Download PDF
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE 1 — COVER
+═══════════════════════════════════════════ -->
+<div class="page cover-page" id="document">
+
+  <!-- Watermark -->
+  <div class="wm">
+    <div class="wm-inner">
+      <div class="wm-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" fill="none">
+          <path d="M5,52 Q20,32 35,52" stroke="#6c5ef6" stroke-width="4" stroke-linecap="round"/>
+          <path d="M28,52 Q50,18 72,52" stroke="#6c5ef6" stroke-width="5" stroke-linecap="round"/>
+          <path d="M60,52 Q90,4 120,52" stroke="#6c5ef6" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="wm-text">GROUNDSWELL</div>
+    </div>
+  </div>
+
+  <!-- Decorative arc -->
+  <div class="cover-arc">
+    <svg width="500" height="500" viewBox="0 0 500 500" fill="none">
+      <circle cx="250" cy="250" r="200" stroke="#6c5ef6" stroke-width="60" opacity="0.5"/>
+      <circle cx="250" cy="250" r="280" stroke="#6c5ef6" stroke-width="30" opacity="0.25"/>
+    </svg>
+  </div>
+
+  <div class="pc">
+    <div class="cover-top">
+      <!-- Logo -->
+      <div class="cover-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 80" fill="none">
+          <defs>
+            <linearGradient id="covG" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#6c5ef6"/>
+              <stop offset="100%" stop-color="#00c8ff"/>
+            </linearGradient>
+          </defs>
+          <path d="M4,68 Q16,50 28,68" stroke="url(#covG)" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+          <path d="M20,68 Q38,36 56,68" stroke="url(#covG)" stroke-width="3.5" stroke-linecap="round" opacity="0.7"/>
+          <path d="M44,68 Q68,10 92,68" stroke="url(#covG)" stroke-width="4" stroke-linecap="round"/>
+          <line x1="0" y1="72" x2="96" y2="72" stroke="url(#covG)" stroke-width="1.5" opacity="0.2"/>
+          <text x="108" y="56" font-family="Inter, sans-serif" font-weight="800" font-size="36" letter-spacing="-1.5" fill="#ffffff">Groundswell</text>
+          <text x="109" y="72" font-family="Inter, sans-serif" font-weight="600" font-size="10.5" letter-spacing="3" fill="#6c5ef6">AI-POWERED GROWTH</text>
+        </svg>
+      </div>
+
+      <div class="cover-tag">⚡ Confidential Product Guide</div>
+
+      <h1 class="cover-title">AI-Powered<br />Growth Systems</h1>
+      <p class="cover-sub">A complete guide to our four automation systems — built to help small businesses generate leads, manage reputation, dominate search, and reactivate past customers on autopilot.</p>
+    </div>
+
+    <div class="cover-bottom">
+      <div class="cover-meta">groundswell.app &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Confidential</div>
+      <div class="cover-chips">
+        <div class="chip">Lead Generation</div>
+        <div class="chip">Review System</div>
+        <div class="chip">SEO Engine</div>
+        <div class="chip">Reactivation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 2 — OVERVIEW
+═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="wm"><div class="wm-inner"><div class="wm-wave"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" fill="none"><path d="M5,52 Q20,32 35,52" stroke="#6c5ef6" stroke-width="4" stroke-linecap="round"/><path d="M28,52 Q50,18 72,52" stroke="#6c5ef6" stroke-width="5" stroke-linecap="round"/><path d="M60,52 Q90,4 120,52" stroke="#6c5ef6" stroke-width="6" stroke-linecap="round"/></svg></div><div class="wm-text">GROUNDSWELL</div></div></div>
+
+  <div class="pc">
+    <div class="page-header">
+      <div class="ph-label">Overview</div>
+      <h2 class="ph-title">Four Systems. One Mission.</h2>
+      <p class="ph-sub">Every system works independently — but together they create a self-reinforcing growth flywheel for your business.</p>
+    </div>
+
+    <div class="page-body">
+      <div class="overview-grid">
+        <div class="ov-card">
+          <div class="ov-icon" style="background:rgba(108,94,246,0.12);">🎯</div>
+          <div class="ov-num">System 01</div>
+          <div class="ov-title">Lead Generation Engine</div>
+          <div class="ov-desc">Identifies your ideal prospects, writes personalized AI outreach, and runs follow-up sequences automatically — booking calls without a sales team.</div>
+        </div>
+        <div class="ov-card">
+          <div class="ov-icon" style="background:rgba(255,77,158,0.12);">⭐</div>
+          <div class="ov-num">System 02</div>
+          <div class="ov-title">Review Response System</div>
+          <div class="ov-desc">Monitors your review platforms 24/7 and responds to every review — positive or negative — within minutes, with brand-perfect language.</div>
+        </div>
+        <div class="ov-card">
+          <div class="ov-icon" style="background:rgba(0,200,255,0.12);">✍️</div>
+          <div class="ov-num">System 03</div>
+          <div class="ov-title">SEO Content Engine</div>
+          <div class="ov-desc">Researches high-intent keywords, writes optimized long-form articles, and publishes on a consistent schedule — all automatically.</div>
+        </div>
+        <div class="ov-card">
+          <div class="ov-icon" style="background:rgba(255,170,0,0.12);">🔁</div>
+          <div class="ov-num">System 04</div>
+          <div class="ov-title">Customer Reactivation</div>
+          <div class="ov-desc">Segments your dormant customer list and sends personalized re-engagement sequences with timely offers that bring them back.</div>
+        </div>
+      </div>
+
+      <!-- Flywheel diagram -->
+      <div class="diagram-wrap" style="margin-top:1.25rem; padding: 1.25rem 1.5rem;">
+        <div class="diagram-label">How the systems compound</div>
+        <svg width="100%" height="110" viewBox="0 0 680 110">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#a2a6b8"/>
+            </marker>
+          </defs>
+          <!-- Boxes -->
+          <rect x="0" y="30" width="140" height="50" rx="10" fill="rgba(108,94,246,0.10)" stroke="#6c5ef6" stroke-width="1.5"/>
+          <text x="70" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="11" fill="#6c5ef6">🎯 Lead Engine</text>
+          <text x="70" y="68" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#686c80">generates prospects</text>
+
+          <rect x="180" y="30" width="140" height="50" rx="10" fill="rgba(255,77,158,0.08)" stroke="#ff4d9e" stroke-width="1.5"/>
+          <text x="250" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="11" fill="#ff4d9e">⭐ Review System</text>
+          <text x="250" y="68" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#686c80">builds trust & authority</text>
+
+          <rect x="360" y="30" width="140" height="50" rx="10" fill="rgba(0,200,255,0.08)" stroke="#00a8d6" stroke-width="1.5"/>
+          <text x="430" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="11" fill="#00a8d6">✍️ SEO Engine</text>
+          <text x="430" y="68" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#686c80">drives organic traffic</text>
+
+          <rect x="540" y="30" width="140" height="50" rx="10" fill="rgba(255,170,0,0.10)" stroke="#cc8800" stroke-width="1.5"/>
+          <text x="610" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="11" fill="#cc8800">🔁 Reactivation</text>
+          <text x="610" y="68" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#686c80">converts dormant list</text>
+
+          <!-- Arrows -->
+          <line x1="141" y1="55" x2="178" y2="55" stroke="#a2a6b8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="321" y1="55" x2="358" y2="55" stroke="#a2a6b8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="501" y1="55" x2="538" y2="55" stroke="#a2a6b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- Loop back arrow -->
+          <path d="M610,80 Q610,105 350,105 Q90,105 70,80" fill="none" stroke="#a2a6b8" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+          <text x="350" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">compounds over time</text>
+        </svg>
+      </div>
+
+      <div class="mission-block">
+        <div class="mb-stat"><div class="mb-num">80–90%</div><div class="mb-label">Gross Margin</div></div>
+        <div class="mb-divider"></div>
+        <div class="mb-stat"><div class="mb-num">24/7</div><div class="mb-label">Always Running</div></div>
+        <div class="mb-divider"></div>
+        <div class="mb-stat"><div class="mb-num">~0h</div><div class="mb-label">Manual Work</div></div>
+        <div class="mb-divider"></div>
+        <div class="mb-text"><strong>Our mission:</strong> Give every small business access to the same growth systems that Fortune 500 companies use — fully automated, at a fraction of the traditional cost.</div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div class="pf-brand">GROUNDSWELL · AI-POWERED GROWTH SYSTEMS</div>
+      <div class="pf-page">Page 2 of 7</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 3 — LEAD GENERATION ENGINE
+═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="wm"><div class="wm-inner"><div class="wm-wave"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" fill="none"><path d="M5,52 Q20,32 35,52" stroke="#6c5ef6" stroke-width="4" stroke-linecap="round"/><path d="M28,52 Q50,18 72,52" stroke="#6c5ef6" stroke-width="5" stroke-linecap="round"/><path d="M60,52 Q90,4 120,52" stroke="#6c5ef6" stroke-width="6" stroke-linecap="round"/></svg></div><div class="wm-text">GROUNDSWELL</div></div></div>
+
+  <div class="pc">
+    <div class="product-header" style="border-bottom:3px solid #6c5ef6;">
+      <div class="prod-tag" style="background:rgba(108,94,246,0.10);color:#6c5ef6;border:1px solid rgba(108,94,246,0.25);">🎯 &nbsp; System 01</div>
+      <h2 class="prod-title">Lead Generation Engine</h2>
+      <p class="prod-sub">An always-on AI outreach system that finds your ideal prospects, crafts personalized messages, and runs follow-up sequences automatically — filling your pipeline without a single cold call from you.</p>
+    </div>
+
+    <div class="prod-body">
+      <!-- Flow diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">How it works — end to end</div>
+        <svg width="100%" height="130" viewBox="0 0 680 130">
+          <defs>
+            <marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6c5ef6"/></marker>
+          </defs>
+          <!-- Step boxes -->
+          <rect x="0" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#6c5ef6" stroke-width="1.5"/>
+          <text x="59" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">🎯</text>
+          <text x="59" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Prospect</text>
+          <text x="59" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Discovery</text>
+
+          <rect x="141" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#6c5ef6" stroke-width="1.5"/>
+          <text x="200" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">✉️</text>
+          <text x="200" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Personalized</text>
+          <text x="200" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Outreach</text>
+
+          <rect x="282" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#6c5ef6" stroke-width="1.5"/>
+          <text x="341" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">🔄</text>
+          <text x="341" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Follow-Up</text>
+          <text x="341" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Sequence</text>
+
+          <rect x="423" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#6c5ef6" stroke-width="1.5"/>
+          <text x="482" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">💬</text>
+          <text x="482" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Prospect</text>
+          <text x="482" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Replies</text>
+
+          <rect x="564" y="20" width="118" height="70" rx="10" fill="rgba(108,94,246,0.12)" stroke="#6c5ef6" stroke-width="2"/>
+          <text x="623" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">📅</text>
+          <text x="623" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="10" fill="#6c5ef6">Call</text>
+          <text x="623" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="10" fill="#6c5ef6">Booked ✓</text>
+
+          <!-- Arrows -->
+          <line x1="119" y1="55" x2="139" y2="55" stroke="#6c5ef6" stroke-width="1.5" marker-end="url(#a1)"/>
+          <line x1="260" y1="55" x2="280" y2="55" stroke="#6c5ef6" stroke-width="1.5" marker-end="url(#a1)"/>
+          <line x1="401" y1="55" x2="421" y2="55" stroke="#6c5ef6" stroke-width="1.5" marker-end="url(#a1)"/>
+          <line x1="542" y1="55" x2="562" y2="55" stroke="#6c5ef6" stroke-width="1.5" marker-end="url(#a1)"/>
+
+          <!-- Labels below -->
+          <text x="59" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">AI finds ICPs</text>
+          <text x="200" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Unique per lead</text>
+          <text x="341" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">3–5 touch points</text>
+          <text x="482" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">AI handles reply</text>
+          <text x="623" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6c5ef6">On your calendar</text>
+        </svg>
+      </div>
+
+      <!-- Step breakdown -->
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(108,94,246,0.12);color:#6c5ef6">01</div>
+          <div class="sr-content">
+            <h4>Ideal Customer Profile (ICP) Discovery</h4>
+            <p>Our AI maps your business to identify the exact type of prospect most likely to convert — by industry, company size, location, role, and buying signals. We don't spray and pray. Every prospect is pre-qualified before contact.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(108,94,246,0.12);color:#6c5ef6">02</div>
+          <div class="sr-content">
+            <h4>Hyper-Personalized Outreach</h4>
+            <p>For each prospect, our AI researches their business and writes a unique first message — referencing their specific context, pain points, and industry. No templates. Every message reads like it was written by hand.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(108,94,246,0.12);color:#6c5ef6">03</div>
+          <div class="sr-content">
+            <h4>Automated Multi-Touch Follow-Up</h4>
+            <p>If there's no reply, a smart follow-up sequence kicks in — adding new value at each touch point (an insight, a case study, a relevant offer). Sequences run for 3–5 touches over 2–3 weeks, then gracefully exit if no response.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="outcomes">
+        <div class="outcome">
+          <div class="oc-val" style="color:#6c5ef6">23+</div>
+          <div class="oc-label">Qualified prospects per week</div>
+        </div>
+        <div class="outcome">
+          <div class="oc-val" style="color:#6c5ef6">24/7</div>
+          <div class="oc-label">Outreach never stops</div>
+        </div>
+        <div class="outcome">
+          <div class="oc-val" style="color:#6c5ef6">~0h</div>
+          <div class="oc-label">Manual sales effort needed</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div class="pf-brand">GROUNDSWELL · AI-POWERED GROWTH SYSTEMS</div>
+      <div class="pf-page">Page 3 of 7</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 4 — REVIEW RESPONSE SYSTEM
+═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="wm"><div class="wm-inner"><div class="wm-wave"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" fill="none"><path d="M5,52 Q20,32 35,52" stroke="#6c5ef6" stroke-width="4" stroke-linecap="round"/><path d="M28,52 Q50,18 72,52" stroke="#6c5ef6" stroke-width="5" stroke-linecap="round"/><path d="M60,52 Q90,4 120,52" stroke="#6c5ef6" stroke-width="6" stroke-linecap="round"/></svg></div><div class="wm-text">GROUNDSWELL</div></div></div>
+
+  <div class="pc">
+    <div class="product-header" style="border-bottom:3px solid #ff4d9e;">
+      <div class="prod-tag" style="background:rgba(255,77,158,0.10);color:#ff4d9e;border:1px solid rgba(255,77,158,0.25);">⭐ &nbsp; System 02</div>
+      <h2 class="prod-title">Review Response System</h2>
+      <p class="prod-sub">Every review your business receives — 5-star praise or a 1-star complaint — gets a brand-perfect, thoughtful response within minutes. Protect your reputation, build social proof, and boost your local SEO simultaneously.</p>
+    </div>
+
+    <div class="prod-body">
+      <div class="diagram-wrap">
+        <div class="diagram-label">Review response flow</div>
+        <svg width="100%" height="130" viewBox="0 0 680 130">
+          <defs>
+            <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#ff4d9e"/></marker>
+          </defs>
+          <rect x="0" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#ff4d9e" stroke-width="1.5"/>
+          <text x="59" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">⭐</text>
+          <text x="59" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">New Review</text>
+          <text x="59" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Detected</text>
+
+          <rect x="141" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#ff4d9e" stroke-width="1.5"/>
+          <text x="200" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">🔍</text>
+          <text x="200" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Sentiment</text>
+          <text x="200" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Analysis</text>
+
+          <rect x="282" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#ff4d9e" stroke-width="1.5"/>
+          <text x="341" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">✍️</text>
+          <text x="341" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Response</text>
+          <text x="341" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Drafted</text>
+
+          <rect x="423" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#ff4d9e" stroke-width="1.5"/>
+          <text x="482" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">📤</text>
+          <text x="482" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Published</text>
+          <text x="482" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">in &lt; 5 min</text>
+
+          <rect x="564" y="20" width="118" height="70" rx="10" fill="rgba(255,77,158,0.10)" stroke="#ff4d9e" stroke-width="2"/>
+          <text x="623" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">📈</text>
+          <text x="623" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="10" fill="#ff4d9e">Reputation</text>
+          <text x="623" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="10" fill="#ff4d9e">+ SEO ✓</text>
+
+          <line x1="119" y1="55" x2="139" y2="55" stroke="#ff4d9e" stroke-width="1.5" marker-end="url(#a2)"/>
+          <line x1="260" y1="55" x2="280" y2="55" stroke="#ff4d9e" stroke-width="1.5" marker-end="url(#a2)"/>
+          <line x1="401" y1="55" x2="421" y2="55" stroke="#ff4d9e" stroke-width="1.5" marker-end="url(#a2)"/>
+          <line x1="542" y1="55" x2="562" y2="55" stroke="#ff4d9e" stroke-width="1.5" marker-end="url(#a2)"/>
+
+          <text x="59" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Google, Yelp, etc.</text>
+          <text x="200" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Tone + context read</text>
+          <text x="341" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Brand-matched</text>
+          <text x="482" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Auto-posted</text>
+          <text x="623" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#ff4d9e">Both improve</text>
+        </svg>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(255,77,158,0.10);color:#ff4d9e">01</div>
+          <div class="sr-content">
+            <h4>Real-Time Review Monitoring</h4>
+            <p>Our system watches Google Business, Yelp, TripAdvisor, and other relevant platforms around the clock. The moment a new review is posted, it's captured and queued for response — no delays, no missed reviews.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(255,77,158,0.10);color:#ff4d9e">02</div>
+          <div class="sr-content">
+            <h4>Tone-Aware, Brand-Voice Responses</h4>
+            <p>Positive reviews receive warm, grateful responses that reinforce your brand personality. Negative reviews receive empathetic, de-escalating responses that protect your reputation — never defensive, never robotic.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(255,77,158,0.10);color:#ff4d9e">03</div>
+          <div class="sr-content">
+            <h4>SEO Compounding Effect</h4>
+            <p>Google's local ranking algorithm rewards businesses that actively engage with reviews. Consistent, keyword-rich responses signal authority and improve your position in local search results — generating more organic discovery over time.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="outcomes">
+        <div class="outcome"><div class="oc-val" style="color:#ff4d9e">12+</div><div class="oc-label">Responses per day</div></div>
+        <div class="outcome"><div class="oc-val" style="color:#ff4d9e">&lt;5m</div><div class="oc-label">Average response time</div></div>
+        <div class="outcome"><div class="oc-val" style="color:#ff4d9e">100%</div><div class="oc-label">Reviews answered</div></div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div class="pf-brand">GROUNDSWELL · AI-POWERED GROWTH SYSTEMS</div>
+      <div class="pf-page">Page 4 of 7</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 5 — SEO CONTENT ENGINE
+═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="wm"><div class="wm-inner"><div class="wm-wave"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" fill="none"><path d="M5,52 Q20,32 35,52" stroke="#6c5ef6" stroke-width="4" stroke-linecap="round"/><path d="M28,52 Q50,18 72,52" stroke="#6c5ef6" stroke-width="5" stroke-linecap="round"/><path d="M60,52 Q90,4 120,52" stroke="#6c5ef6" stroke-width="6" stroke-linecap="round"/></svg></div><div class="wm-text">GROUNDSWELL</div></div></div>
+
+  <div class="pc">
+    <div class="product-header" style="border-bottom:3px solid #00a8d6;">
+      <div class="prod-tag" style="background:rgba(0,200,255,0.10);color:#0090b8;border:1px solid rgba(0,168,214,0.25);">✍️ &nbsp; System 03</div>
+      <h2 class="prod-title">SEO Content Engine</h2>
+      <p class="prod-sub">A fully automated publishing machine that researches what your customers search for, writes authoritative content optimized for Google, and publishes on a consistent schedule — giving you a full content team at a fraction of the cost.</p>
+    </div>
+
+    <div class="prod-body">
+      <div class="diagram-wrap">
+        <div class="diagram-label">Content production pipeline</div>
+        <svg width="100%" height="130" viewBox="0 0 680 130">
+          <defs>
+            <marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#00a8d6"/></marker>
+          </defs>
+          <rect x="0" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#00a8d6" stroke-width="1.5"/>
+          <text x="59" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">🔎</text>
+          <text x="59" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Keyword</text>
+          <text x="59" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Research</text>
+
+          <rect x="141" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#00a8d6" stroke-width="1.5"/>
+          <text x="200" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">📋</text>
+          <text x="200" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Content</text>
+          <text x="200" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Brief</text>
+
+          <rect x="282" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#00a8d6" stroke-width="1.5"/>
+          <text x="341" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">✍️</text>
+          <text x="341" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">AI Writing</text>
+          <text x="341" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">2,000+ words</text>
+
+          <rect x="423" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#00a8d6" stroke-width="1.5"/>
+          <text x="482" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">⚙️</text>
+          <text x="482" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">On-Page</text>
+          <text x="482" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Optimization</text>
+
+          <rect x="564" y="20" width="118" height="70" rx="10" fill="rgba(0,200,255,0.10)" stroke="#00a8d6" stroke-width="2"/>
+          <text x="623" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">🚀</text>
+          <text x="623" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="10" fill="#0090b8">Published</text>
+          <text x="623" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="10" fill="#0090b8">+ Rankings ✓</text>
+
+          <line x1="119" y1="55" x2="139" y2="55" stroke="#00a8d6" stroke-width="1.5" marker-end="url(#a3)"/>
+          <line x1="260" y1="55" x2="280" y2="55" stroke="#00a8d6" stroke-width="1.5" marker-end="url(#a3)"/>
+          <line x1="401" y1="55" x2="421" y2="55" stroke="#00a8d6" stroke-width="1.5" marker-end="url(#a3)"/>
+          <line x1="542" y1="55" x2="562" y2="55" stroke="#00a8d6" stroke-width="1.5" marker-end="url(#a3)"/>
+
+          <text x="59" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">High-intent, low-comp</text>
+          <text x="200" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Structured outline</text>
+          <text x="341" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Long-form, authoritative</text>
+          <text x="482" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Meta, headers, links</text>
+          <text x="623" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#0090b8">Scheduled cadence</text>
+        </svg>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(0,200,255,0.10);color:#0090b8">01</div>
+          <div class="sr-content">
+            <h4>Keyword Research & Opportunity Mapping</h4>
+            <p>We identify high-intent, low-competition keywords that your ideal customers use when they're ready to buy — not just browsing. Every content piece is tied directly to a search term with real conversion potential.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(0,200,255,0.10);color:#0090b8">02</div>
+          <div class="sr-content">
+            <h4>Long-Form AI Content Writing</h4>
+            <p>Our AI produces 2,000+ word articles structured the way Google rewards — proper heading hierarchy, FAQ sections, internal linking, and clear calls to action. Every piece reads like it was written by a subject matter expert.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(0,200,255,0.10);color:#0090b8">03</div>
+          <div class="sr-content">
+            <h4>Consistent Publishing Schedule</h4>
+            <p>Content is queued and published on a weekly cadence. Consistency is the single biggest SEO factor most businesses fail at — publishing once then going quiet kills rankings. Our system keeps the engine running without any effort from you.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="outcomes">
+        <div class="outcome"><div class="oc-val" style="color:#0090b8">4+</div><div class="oc-label">Articles published per week</div></div>
+        <div class="outcome"><div class="oc-val" style="color:#0090b8">2k+</div><div class="oc-label">Words per article</div></div>
+        <div class="outcome"><div class="oc-val" style="color:#0090b8">↑ SEO</div><div class="oc-label">Compounding monthly growth</div></div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div class="pf-brand">GROUNDSWELL · AI-POWERED GROWTH SYSTEMS</div>
+      <div class="pf-page">Page 5 of 7</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 6 — CUSTOMER REACTIVATION
+═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="wm"><div class="wm-inner"><div class="wm-wave"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" fill="none"><path d="M5,52 Q20,32 35,52" stroke="#6c5ef6" stroke-width="4" stroke-linecap="round"/><path d="M28,52 Q50,18 72,52" stroke="#6c5ef6" stroke-width="5" stroke-linecap="round"/><path d="M60,52 Q90,4 120,52" stroke="#6c5ef6" stroke-width="6" stroke-linecap="round"/></svg></div><div class="wm-text">GROUNDSWELL</div></div></div>
+
+  <div class="pc">
+    <div class="product-header" style="border-bottom:3px solid #cc8800;">
+      <div class="prod-tag" style="background:rgba(255,170,0,0.12);color:#cc8800;border:1px solid rgba(204,136,0,0.25);">🔁 &nbsp; System 04</div>
+      <h2 class="prod-title">Customer Reactivation</h2>
+      <p class="prod-sub">Your past customers are your most valuable — and most overlooked — asset. They already know you, already trust you, and cost 5× less to convert than a cold lead. We build AI sequences that bring them back.</p>
+    </div>
+
+    <div class="prod-body">
+      <div class="diagram-wrap">
+        <div class="diagram-label">Reactivation sequence flow</div>
+        <svg width="100%" height="130" viewBox="0 0 680 130">
+          <defs>
+            <marker id="a4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#cc8800"/></marker>
+          </defs>
+          <rect x="0" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#cc8800" stroke-width="1.5"/>
+          <text x="59" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">🗂️</text>
+          <text x="59" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Customer</text>
+          <text x="59" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Audit</text>
+
+          <rect x="141" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#cc8800" stroke-width="1.5"/>
+          <text x="200" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">🔀</text>
+          <text x="200" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Smart</text>
+          <text x="200" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Segmentation</text>
+
+          <rect x="282" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#cc8800" stroke-width="1.5"/>
+          <text x="341" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">💌</text>
+          <text x="341" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Personalized</text>
+          <text x="341" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Re-engagement</text>
+
+          <rect x="423" y="20" width="118" height="70" rx="10" fill="#fff" stroke="#cc8800" stroke-width="1.5"/>
+          <text x="482" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">🎁</text>
+          <text x="482" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Offer</text>
+          <text x="482" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="10" fill="#09090e">Sequence</text>
+
+          <rect x="564" y="20" width="118" height="70" rx="10" fill="rgba(255,170,0,0.12)" stroke="#cc8800" stroke-width="2"/>
+          <text x="623" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="18">💰</text>
+          <text x="623" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="10" fill="#cc8800">Re-converted</text>
+          <text x="623" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="10" fill="#cc8800">Customer ✓</text>
+
+          <line x1="119" y1="55" x2="139" y2="55" stroke="#cc8800" stroke-width="1.5" marker-end="url(#a4)"/>
+          <line x1="260" y1="55" x2="280" y2="55" stroke="#cc8800" stroke-width="1.5" marker-end="url(#a4)"/>
+          <line x1="401" y1="55" x2="421" y2="55" stroke="#cc8800" stroke-width="1.5" marker-end="url(#a4)"/>
+          <line x1="542" y1="55" x2="562" y2="55" stroke="#cc8800" stroke-width="1.5" marker-end="url(#a4)"/>
+
+          <text x="59" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Find dormant contacts</text>
+          <text x="200" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">By recency + behavior</text>
+          <text x="341" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">References history</text>
+          <text x="482" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#a2a6b8">Escalates over time</text>
+          <text x="623" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#cc8800">↑ LTV achieved</text>
+        </svg>
+      </div>
+
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(255,170,0,0.12);color:#cc8800">01</div>
+          <div class="sr-content">
+            <h4>Dormant Customer Audit & Segmentation</h4>
+            <p>We analyze your existing customer list and segment it by how recently they purchased, what they bought, and their predicted likelihood to return — creating prioritized groups for targeted re-engagement sequences.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(255,170,0,0.12);color:#cc8800">02</div>
+          <div class="sr-content">
+            <h4>History-Aware Personalized Messages</h4>
+            <p>Each re-engagement message references the customer's specific history with your business — their last purchase, the problem you solved, or a milestone since their last visit. These feel personal, not like broadcast marketing blasts.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="sr-num" style="background:rgba(255,170,0,0.12);color:#cc8800">03</div>
+          <div class="sr-content">
+            <h4>Escalating Offer Sequences</h4>
+            <p>Sequences start with a soft check-in and gradually introduce a timely offer — a relevant upgrade, a seasonal promotion, or an exclusive returning-customer incentive. Timing is optimized to maximize conversions without feeling pushy.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="outcomes">
+        <div class="outcome"><div class="oc-val" style="color:#cc8800">7+</div><div class="oc-label">Customers re-engaged per week</div></div>
+        <div class="outcome"><div class="oc-val" style="color:#cc8800">5×</div><div class="oc-label">Lower cost than cold outreach</div></div>
+        <div class="outcome"><div class="oc-val" style="color:#cc8800">↑ LTV</div><div class="oc-label">Per customer lifetime value</div></div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div class="pf-brand">GROUNDSWELL · AI-POWERED GROWTH SYSTEMS</div>
+      <div class="pf-page">Page 6 of 7</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 7 — GET STARTED
+═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="wm"><div class="wm-inner"><div class="wm-wave"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" fill="none"><path d="M5,52 Q20,32 35,52" stroke="#6c5ef6" stroke-width="4" stroke-linecap="round"/><path d="M28,52 Q50,18 72,52" stroke="#6c5ef6" stroke-width="5" stroke-linecap="round"/><path d="M60,52 Q90,4 120,52" stroke="#6c5ef6" stroke-width="6" stroke-linecap="round"/></svg></div><div class="wm-text">GROUNDSWELL</div></div></div>
+
+  <div class="pc">
+    <div class="page-header">
+      <div class="ph-label">Next Steps</div>
+      <h2 class="ph-title">Ready to grow on autopilot?</h2>
+      <p class="ph-sub">Getting started takes one conversation. We'll map the right systems for your business and have them live within days.</p>
+    </div>
+
+    <div class="contact-page-body">
+      <div class="cta-block">
+        <h2>Let's Build Your System</h2>
+        <p>Book a free discovery call. We'll learn about your business, identify the highest-leverage systems, and give you a clear plan — no commitment required.</p>
+        <div class="cta-email">azandre.ramus@gmail.com</div>
+      </div>
+
+      <div class="contact-cols">
+        <div class="cc-item">
+          <div class="cc-icon">🗓️</div>
+          <div class="cc-title">Discovery Call</div>
+          <div class="cc-val">30 minutes. We learn your business and map the right systems.</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-icon">⚡</div>
+          <div class="cc-title">Fast Onboarding</div>
+          <div class="cc-val">Systems are built and live within days, not months.</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-icon">📊</div>
+          <div class="cc-title">Transparent Results</div>
+          <div class="cc-val">You see exactly what's running and what it's producing.</div>
+        </div>
+      </div>
+
+      <!-- Process steps -->
+      <div style="margin-top:1.5rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+        <div style="text-align:center;padding:1.5rem;background:#f5f5fb;border-radius:14px;border:1px solid #ecedf4;">
+          <div style="font-size:1.75rem;font-weight:900;color:#6c5ef6;letter-spacing:-1px;margin-bottom:0.4rem;">01</div>
+          <div style="font-size:0.85rem;font-weight:800;margin-bottom:0.3rem;">Discovery Call</div>
+          <div style="font-size:0.75rem;color:#686c80;line-height:1.5">Learn your goals and map the highest-leverage systems</div>
+        </div>
+        <div style="text-align:center;padding:1.5rem;background:#f5f5fb;border-radius:14px;border:1px solid #ecedf4;">
+          <div style="font-size:1.75rem;font-weight:900;color:#6c5ef6;letter-spacing:-1px;margin-bottom:0.4rem;">02</div>
+          <div style="font-size:0.85rem;font-weight:800;margin-bottom:0.3rem;">System Build</div>
+          <div style="font-size:0.75rem;color:#686c80;line-height:1.5">Custom-built to your brand voice, industry, and audience</div>
+        </div>
+        <div style="text-align:center;padding:1.5rem;background:#f5f5fb;border-radius:14px;border:1px solid #ecedf4;">
+          <div style="font-size:1.75rem;font-weight:900;color:#6c5ef6;letter-spacing:-1px;margin-bottom:0.4rem;">03</div>
+          <div style="font-size:0.85rem;font-weight:800;margin-bottom:0.3rem;">Launch & Grow</div>
+          <div style="font-size:0.75rem;color:#686c80;line-height:1.5">Systems go live, results compound, you watch it work</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div class="pf-brand">GROUNDSWELL · AI-POWERED GROWTH SYSTEMS</div>
+      <div class="pf-page">Page 7 of 7</div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  async function generatePDF() {
+    const btn = document.getElementById('dl-btn');
+    btn.textContent = '⏳ Generating PDF…';
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    // Temporarily hide toolbar
+    document.querySelector('.toolbar').style.display = 'none';
+
+    const pages = document.querySelectorAll('.page');
+    const opt = {
+      margin: 0,
+      filename: 'Groundswell-Product-Guide.pdf',
+      image: { type: 'jpeg', quality: 0.97 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait' },
+      pagebreak: { mode: 'avoid-all' }
+    };
+
+    let worker = html2pdf().set(opt);
+
+    // Chain all pages
+    const pageArray = Array.from(pages);
+    worker = worker.from(pageArray[0]);
+
+    for (let i = 1; i < pageArray.length; i++) {
+      worker = worker.toPdf().get('pdf').then(pdf => {
+        pdf.addPage();
+      }).from(pageArray[i]).toCanvas().toPdf();
+    }
+
+    await worker.save();
+
+    document.querySelector('.toolbar').style.display = 'flex';
+    btn.textContent = '✓ Downloaded!';
+    btn.classList.remove('loading');
+    setTimeout(() => {
+      btn.textContent = '↓ Download PDF';
+      btn.disabled = false;
+    }, 2500);
+  }
+</script>
+</body>
+</html>
