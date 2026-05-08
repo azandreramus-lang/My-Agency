@@ -1,2 +1,2 @@
 # GoodSwellAgency
-GoodsWellAgency
+GoodSwellAgency
