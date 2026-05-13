@@ -3,32 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Groundswell — AI-Powered Growth Systems</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <title>Orbit Loop — AI-Powered Growth Systems</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #ecedf4;
-      --surface:   #ffffff;
-      --sf2:       #f5f5fb;
-      --text:      #09090e;
-      --muted:     #686c80;
-      --faint:     #a2a6b8;
-      --violet:    #6c5ef6;
-      --v10:       rgba(108,94,246,0.10);
-      --v20:       rgba(108,94,246,0.20);
-      --green:     #1db954;
-      --g10:       rgba(29,185,84,0.12);
-      --border:    rgba(9,9,14,0.07);
-      --border-md: rgba(9,9,14,0.13);
-      --shadow-sm: 0 2px 8px rgba(9,9,14,0.06);
-      --shadow:    0 4px 20px rgba(9,9,14,0.08);
-      --shadow-md: 0 10px 40px rgba(9,9,14,0.11);
-      --shadow-lg: 0 24px 64px rgba(9,9,14,0.14);
-      --r:         22px;
-      --r-sm:      12px;
-      --r-pill:    999px;
+      /* Surfaces */
+      --bg:        #faf9f5;
+      --surface:   #efe9de;
+      --sf2:       #f5f0e8;
+      --dark:      #181715;
+      --dark-elev: #252320;
+
+      /* Text */
+      --text:      #141413;
+      --muted:     #6c6a64;
+      --faint:     #8e8b82;
+      --on-dark:   #faf9f5;
+      --on-dark-soft: #a09d96;
+
+      /* Accent — coral */
+      --coral:        #cc785c;
+      --coral-active: #a9583e;
+      --coral-10:     rgba(204,120,92,0.10);
+      --coral-20:     rgba(204,120,92,0.20);
+
+      /* Green (status/live indicators only) */
+      --green:     #5db872;
+      --g10:       rgba(93,184,114,0.12);
+
+      /* Borders */
+      --border:    #e6dfd8;
+      --border-md: #d8d0c8;
+
+      /* Shadows — faint, used sparingly */
+      --shadow-sm: 0 1px 3px rgba(20,20,19,0.08);
+      --shadow:    0 1px 3px rgba(20,20,19,0.08);
+      --shadow-md: 0 1px 3px rgba(20,20,19,0.08);
+      --shadow-lg: 0 1px 3px rgba(20,20,19,0.08);
+
+      /* Border radius */
+      --r:         12px;
+      --r-sm:      8px;
+      --r-pill:    9999px;
     }
 
     html { scroll-behavior: smooth; }
@@ -41,6 +60,11 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    h1, h2, h3, .section-title, .sc-title, .wm-quote, #modal-title {
+      font-family: 'Cormorant Garamond', 'Tiempos Headline', Georgia, 'Times New Roman', serif;
+      font-weight: 500;
+    }
+
     .container { max-width: 1160px; margin: 0 auto; padding: 0 5vw; }
 
     /* ── NAV ── */
@@ -51,13 +75,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.9rem 5vw;
-      background: rgba(236,237,244,0.85);
+      padding: 0 5vw;
+      height: 76px;
+      background: rgba(250,249,245,0.92);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
 
-    .nav-logo svg { height: 44px; width: auto; display: block; }
+    .nav-logo svg { height: 60px; width: auto; display: block; }
 
     .nav-links { display: flex; gap: 0.15rem; list-style: none; }
 
@@ -67,24 +92,24 @@
       font-size: 0.875rem;
       font-weight: 500;
       padding: 0.4rem 0.85rem;
-      border-radius: var(--r-pill);
+      border-radius: var(--r-sm);
       transition: color 0.15s, background 0.15s;
     }
 
-    .nav-links a:hover { color: var(--text); background: rgba(9,9,14,0.05); }
+    .nav-links a:hover { color: var(--text); background: var(--coral-10); }
 
     .nav-cta {
-      background: var(--text);
+      background: var(--coral);
       color: #fff;
       font-size: 0.875rem;
-      font-weight: 600;
+      font-weight: 500;
       padding: 0.55rem 1.3rem;
-      border-radius: var(--r-pill);
+      border-radius: var(--r-sm);
       text-decoration: none;
-      transition: opacity 0.15s;
+      transition: background 0.15s;
     }
 
-    .nav-cta:hover { opacity: 0.82; }
+    .nav-cta:hover { background: var(--coral-active); }
 
     @media (max-width: 768px) { .nav-links { display: none; } }
 
@@ -131,10 +156,10 @@
     }
 
     h1 {
-      font-size: clamp(3rem, 5.5vw, 5.25rem);
-      font-weight: 900;
-      line-height: 1.02;
-      letter-spacing: -2.5px;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
       color: var(--text);
       margin-bottom: 1.25rem;
     }
@@ -150,36 +175,36 @@
     .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
     .btn-dark {
-      background: var(--text);
+      background: var(--coral);
       color: #fff;
       font-size: 0.93rem;
-      font-weight: 600;
+      font-weight: 500;
       padding: 0.8rem 1.75rem;
-      border-radius: var(--r-pill);
+      border-radius: var(--r-sm);
       text-decoration: none;
       border: none;
-      cursor: pointer;
-      transition: opacity 0.15s;
-      display: inline-block;
-    }
-
-    .btn-dark:hover { opacity: 0.82; }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--text);
-      font-size: 0.93rem;
-      font-weight: 600;
-      padding: 0.8rem 1.75rem;
-      border-radius: var(--r-pill);
-      text-decoration: none;
-      border: 1.5px solid var(--border-md);
       cursor: pointer;
       transition: background 0.15s;
       display: inline-block;
     }
 
-    .btn-outline:hover { background: rgba(9,9,14,0.04); }
+    .btn-dark:hover { background: var(--coral-active); }
+
+    .btn-outline {
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.93rem;
+      font-weight: 500;
+      padding: 0.8rem 1.75rem;
+      border-radius: var(--r-sm);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      display: inline-block;
+    }
+
+    .btn-outline:hover { background: var(--surface); border-color: var(--border-md); }
 
     /* Hero visual — unified dashboard panel */
     .hero-visual {
@@ -188,10 +213,10 @@
     }
 
     .hero-panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: var(--shadow-lg);
+      background: var(--dark);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      box-shadow: none;
       overflow: hidden;
     }
 
@@ -200,8 +225,8 @@
       align-items: center;
       gap: 0.75rem;
       padding: 0.875rem 1.25rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--sf2);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: var(--dark-elev);
     }
 
     .hp-dots { display: flex; gap: 0.35rem; }
@@ -209,11 +234,11 @@
 
     .hp-url {
       flex: 1;
-      background: var(--bg);
+      background: rgba(255,255,255,0.06);
       border-radius: 6px;
       padding: 0.3rem 0.75rem;
       font-size: 0.7rem;
-      color: var(--faint);
+      color: var(--on-dark-soft);
       font-weight: 500;
     }
 
@@ -229,7 +254,7 @@
     .hp-heading span {
       font-size: 0.78rem;
       font-weight: 700;
-      color: var(--text);
+      color: var(--on-dark);
     }
 
     .hp-live {
@@ -259,7 +284,7 @@
       align-items: center;
       gap: 0.75rem;
       padding: 0.875rem 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
     .hp-row:last-child { border-bottom: none; }
@@ -277,7 +302,7 @@
     .hp-name {
       font-size: 0.8rem;
       font-weight: 700;
-      color: var(--text);
+      color: var(--on-dark);
       margin-bottom: 0.35rem;
       white-space: nowrap;
     }
@@ -285,7 +310,7 @@
     .hp-bar {
       height: 4px;
       border-radius: 2px;
-      background: var(--bg);
+      background: rgba(255,255,255,0.08);
       overflow: hidden;
     }
 
@@ -304,14 +329,14 @@
 
     .hp-stat-num {
       font-size: 1.1rem;
-      font-weight: 900;
-      letter-spacing: -0.5px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
       line-height: 1;
     }
 
     .hp-stat-label {
       font-size: 0.6rem;
-      color: var(--muted);
+      color: var(--on-dark-soft);
       margin-top: 0.15rem;
     }
 
@@ -323,7 +348,7 @@
       margin-top: 0.875rem;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
     }
 
@@ -337,8 +362,8 @@
 
     .hps-num {
       font-size: 1.1rem;
-      font-weight: 900;
-      letter-spacing: -0.5px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
     }
 
     .hps-label {
@@ -352,9 +377,7 @@
     .marquee-wrap {
       overflow: hidden;
       padding: 1rem 0;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      background: var(--dark);
     }
 
     .marquee-track {
@@ -370,7 +393,7 @@
       gap: 0.5rem;
       font-size: 0.75rem;
       font-weight: 600;
-      color: var(--muted);
+      color: var(--on-dark-soft);
       letter-spacing: 0.05em;
       text-transform: uppercase;
       white-space: nowrap;
@@ -379,7 +402,7 @@
     .mi-dot {
       width: 5px; height: 5px;
       border-radius: 50%;
-      background: var(--violet);
+      background: var(--coral);
     }
 
     @keyframes marquee {
@@ -393,15 +416,15 @@
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--violet);
+      color: var(--coral);
       margin-bottom: 0.75rem;
     }
 
     .section-title {
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      line-height: 1.07;
+      font-size: clamp(1.75rem, 3vw, 3rem);
+      font-weight: 500;
+      letter-spacing: -1px;
+      line-height: 1.1;
       color: var(--text);
     }
 
@@ -436,14 +459,14 @@
 
     /* Laptop frame */
     .laptop-frame {
-      background: #18182a;
+      background: var(--dark);
       border-radius: 18px;
       padding: 1.1rem 1.1rem 0;
       box-shadow: var(--shadow-lg);
     }
 
     .laptop-screen {
-      background: #0d0d1c;
+      background: #0f0e0c;
       border-radius: 8px 8px 0 0;
       height: 230px;
       padding: 1rem;
@@ -461,8 +484,8 @@
       animation: shimD 2.5s ease-in-out infinite;
     }
 
-    .ls-line.v { background: linear-gradient(90deg, #6c5ef6, #00d4ff); opacity: 0.65; }
-    .ls-line.g { background: linear-gradient(90deg, #1db954, #6c5ef6); opacity: 0.55; }
+    .ls-line.v { background: linear-gradient(90deg, #cc785c, #e8a55a); opacity: 0.65; }
+    .ls-line.g { background: linear-gradient(90deg, #5db872, #cc785c); opacity: 0.55; }
 
     @keyframes shimD { 0%,100% { opacity: 0.45; } 50% { opacity: 0.9; } }
 
@@ -473,15 +496,15 @@
       font-weight: 700;
       padding: 0.2rem 0.55rem;
       border-radius: 5px;
-      background: rgba(108,94,246,0.18);
-      color: #a89af8;
+      background: rgba(204,120,92,0.18);
+      color: #cc785c;
     }
 
-    .ls-tag.g { background: rgba(29,185,84,0.18); color: #5edb8c; }
+    .ls-tag.g { background: rgba(93,184,114,0.18); color: #5db872; }
 
     .laptop-chin {
       height: 14px;
-      background: #131323;
+      background: #111009;
       border-radius: 0 0 4px 4px;
       margin: 0 4rem;
     }
@@ -489,7 +512,7 @@
     /* Stat accent card below laptop */
     .stat-accent-card {
       margin-top: 1.25rem;
-      background: var(--violet);
+      background: var(--coral);
       border-radius: var(--r);
       padding: 1.75rem 2rem;
       color: #fff;
@@ -500,8 +523,8 @@
 
     .sac-num {
       font-size: 3rem;
-      font-weight: 900;
-      letter-spacing: -2px;
+      font-weight: 500;
+      letter-spacing: -1.5px;
       line-height: 1;
     }
 
@@ -543,7 +566,7 @@
       transition: background 0.2s;
     }
 
-    .service-item:hover::before { background: var(--v10); }
+    .service-item:hover::before { background: var(--coral-10); }
     .service-item:hover .si-arrow { opacity: 1; transform: translateY(-50%) translateX(3px); }
 
     .si-num {
@@ -577,14 +600,14 @@
       top: 50%;
       transform: translateY(-50%);
       font-size: 1rem;
-      color: var(--violet);
+      color: var(--coral);
       opacity: 0;
       transition: opacity 0.18s, transform 0.18s;
       z-index: 1;
     }
 
     /* ── STATS BENTO ── */
-    #stats { padding: 0 0 6rem; }
+    #stats { padding: 6rem 0; background: var(--surface); }
 
     .bento-grid {
       display: grid;
@@ -597,15 +620,15 @@
     }
 
     .bento-card {
-      background: var(--surface);
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--r);
       padding: 2rem;
-      box-shadow: var(--shadow-sm);
+      box-shadow: none;
     }
 
-    .bento-card.dark { background: var(--text); color: #fff; border-color: transparent; }
-    .bento-card.violet { background: var(--violet); color: #fff; border-color: transparent; }
+    .bento-card.dark { background: var(--dark); color: #fff; border-color: transparent; }
+    .bento-card.violet { background: var(--coral); color: #fff; border-color: transparent; }
     .bento-card.wide { grid-column: span 2; }
 
     .bc-label {
@@ -622,8 +645,8 @@
 
     .bc-num {
       font-size: 3.75rem;
-      font-weight: 900;
-      letter-spacing: -2px;
+      font-weight: 500;
+      letter-spacing: -1.5px;
       line-height: 1;
       margin-bottom: 0.4rem;
     }
@@ -665,8 +688,11 @@
     /* ── HOW IT WORKS ── */
     #how {
       padding: 6rem 0;
-      background: var(--surface);
+      background: var(--dark);
     }
+
+    #how .section-label { color: var(--coral); }
+    #how .section-title { color: var(--on-dark); }
 
     .how-header {
       display: flex;
@@ -686,8 +712,8 @@
     @media (max-width: 680px) { .steps-grid { grid-template-columns: 1fr; } }
 
     .step-card {
-      background: var(--sf2);
-      border: 1px solid var(--border);
+      background: var(--dark-elev);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: var(--r);
       padding: 2rem;
       position: relative;
@@ -699,8 +725,8 @@
       position: absolute;
       right: 1.25rem; top: 1rem;
       font-size: 5.5rem;
-      font-weight: 900;
-      color: rgba(9,9,14,0.04);
+      font-weight: 400;
+      color: rgba(250,249,245,0.05);
       letter-spacing: -4px;
       line-height: 1;
       pointer-events: none;
@@ -709,22 +735,23 @@
     .sc-step {
       font-size: 0.7rem;
       font-weight: 700;
-      color: var(--violet);
+      color: var(--coral);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 1rem;
     }
 
     .sc-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: -0.4px;
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: -0.3px;
       margin-bottom: 0.6rem;
+      color: var(--on-dark);
     }
 
     .sc-desc {
       font-size: 0.865rem;
-      color: var(--muted);
+      color: var(--on-dark-soft);
       line-height: 1.67;
     }
 
@@ -749,12 +776,12 @@
       padding: 1rem 1.1rem;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: var(--shadow-sm);
+      border-radius: 12px;
+      box-shadow: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .result-item:hover { border-color: var(--v20); box-shadow: var(--shadow); }
+    .result-item:hover { border-color: var(--coral-20); box-shadow: var(--shadow); }
 
     .ri-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
     .result-item h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
@@ -766,7 +793,7 @@
       border: 1px solid var(--border);
       border-radius: var(--r);
       padding: 1.5rem;
-      box-shadow: var(--shadow-md);
+      box-shadow: none;
     }
 
     .mockup-bar { display: flex; gap: 0.4rem; margin-bottom: 1rem; }
@@ -792,7 +819,7 @@
       position: relative;
     }
 
-    .dash-row:hover { background: var(--sf2); border-color: var(--border); }
+    .dash-row:hover { background: var(--bg); border-color: var(--border); }
     .dash-row:hover .dash-arrow { opacity: 1; transform: translateX(3px); }
 
     .dash-row-header {
@@ -806,7 +833,7 @@
 
     .dash-arrow {
       font-size: 0.85rem;
-      color: var(--violet);
+      color: var(--coral);
       opacity: 0;
       transition: opacity 0.15s, transform 0.15s;
     }
@@ -844,8 +871,8 @@
 
     /* ── CONTACT ── */
     #contact {
-      padding: 6rem 0 8rem;
-      background: var(--surface);
+      padding: 6rem 0;
+      background: var(--bg);
     }
 
     .contact-inner {
@@ -899,9 +926,9 @@
 
     input, textarea, select {
       width: 100%;
-      background: var(--sf2);
+      background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: var(--r-sm);
       color: var(--text);
       font-family: 'Inter', sans-serif;
       font-size: 0.9rem;
@@ -911,9 +938,9 @@
     }
 
     input:focus, textarea:focus, select:focus {
-      border-color: var(--violet);
-      box-shadow: 0 0 0 3px var(--v10);
-      background: var(--surface);
+      border-color: var(--coral);
+      box-shadow: 0 0 0 3px rgba(204,120,92,0.15);
+      background: var(--bg);
     }
 
     textarea { resize: vertical; min-height: 120px; }
@@ -928,7 +955,7 @@
       padding: 0.9rem;
       font-size: 0.925rem;
       border: none;
-      border-radius: var(--r-pill);
+      border-radius: var(--r-sm);
     }
 
     .success-msg {
@@ -946,21 +973,23 @@
 
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--border);
       padding: 1.75rem 5vw;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 1rem;
-      background: var(--surface);
+      background: var(--dark);
     }
 
-    footer .nav-logo svg { height: 36px; }
-    footer p { color: var(--faint); font-size: 0.78rem; }
+    footer .nav-logo svg { height: 44px; }
+    footer p { color: var(--on-dark-soft); font-size: 0.78rem; }
 
     /* ── WHO WE ARE ── */
-    #who { padding: 6rem 0; background: var(--bg); }
+    #who { padding: 6rem 0; background: var(--coral); }
+    #who .section-label { color: rgba(255,255,255,0.6); }
+    #who .section-title { color: #fff; }
+    #who .section-sub   { color: rgba(255,255,255,0.75); }
 
     .who-grid {
       display: grid;
@@ -973,7 +1002,7 @@
     @media (max-width: 860px) { .who-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
 
     .who-manifesto {
-      background: var(--text);
+      background: var(--dark);
       border-radius: var(--r);
       padding: 2.5rem;
       color: #fff;
@@ -981,15 +1010,15 @@
 
     .wm-quote {
       font-size: 1.35rem;
-      font-weight: 800;
+      font-weight: 500;
       line-height: 1.45;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.3px;
       margin-bottom: 1.5rem;
     }
 
     .wm-quote em {
       font-style: normal;
-      color: #a89af8;
+      color: var(--coral);
     }
 
     .wm-attr {
@@ -1006,20 +1035,19 @@
     }
 
     .wv-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
       padding: 1.25rem 1.5rem;
       display: flex;
       gap: 1rem;
       align-items: flex-start;
-      box-shadow: var(--shadow-sm);
-      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: none;
+      transition: border-color 0.2s;
     }
 
     .wv-item:hover {
-      border-color: var(--v20);
-      box-shadow: var(--shadow);
+      border-color: rgba(255,255,255,0.35);
     }
 
     .wv-icon {
@@ -1032,13 +1060,14 @@
 
     .wv-item h4 {
       font-size: 0.9rem;
-      font-weight: 800;
+      font-weight: 700;
       margin-bottom: 0.25rem;
+      color: #fff;
     }
 
     .wv-item p {
       font-size: 0.83rem;
-      color: var(--muted);
+      color: rgba(255,255,255,0.75);
       line-height: 1.6;
     }
 
@@ -1047,30 +1076,30 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1px;
-      background: var(--border);
+      background: rgba(255,255,255,0.15);
       border-radius: var(--r);
       overflow: hidden;
       margin-top: 1rem;
     }
 
     .ws-item {
-      background: var(--surface);
+      background: rgba(250,249,245,0.12);
       padding: 1.5rem 1.25rem;
       text-align: center;
     }
 
     .ws-num {
       font-size: 2rem;
-      font-weight: 900;
-      letter-spacing: -1px;
-      color: var(--violet);
+      font-weight: 500;
+      letter-spacing: -0.8px;
+      color: #fff;
       line-height: 1;
       margin-bottom: 0.35rem;
     }
 
     .ws-label {
       font-size: 0.72rem;
-      color: var(--muted);
+      color: rgba(255,255,255,0.7);
       font-weight: 500;
       line-height: 1.4;
     }
@@ -1091,14 +1120,14 @@
     #modal-overlay.open { display: flex; }
 
     #modal-box {
-      background: var(--surface);
+      background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 24px;
+      border-radius: 16px;
       padding: 2.5rem;
       max-width: 560px;
       width: 100%;
       position: relative;
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow);
       animation: modalIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
       max-height: 90vh;
       overflow-y: auto;
@@ -1112,11 +1141,11 @@
     #modal-close {
       position: absolute;
       top: 1.25rem; right: 1.25rem;
-      background: var(--sf2);
+      background: var(--surface);
       border: 1px solid var(--border);
       color: var(--muted);
       width: 32px; height: 32px;
-      border-radius: 50%;
+      border-radius: 8px;
       font-size: 1.1rem;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
@@ -1124,7 +1153,7 @@
       line-height: 1;
     }
 
-    #modal-close:hover { background: var(--bg); color: var(--text); }
+    #modal-close:hover { background: var(--border); color: var(--text); }
 
     #modal-badge {
       display: inline-flex;
@@ -1141,7 +1170,7 @@
 
     #modal-title {
       font-size: 1.65rem;
-      font-weight: 900;
+      font-weight: 500;
       letter-spacing: -0.5px;
       margin-bottom: 0.6rem;
       color: var(--text);
@@ -1159,7 +1188,7 @@
       gap: 0.9rem;
       margin-bottom: 0.75rem;
       padding: 1rem;
-      background: var(--sf2);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
     }
@@ -1185,13 +1214,13 @@
     .modal-stat {
       flex: 1;
       text-align: center;
-      background: var(--sf2);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 0.875rem 0.5rem;
     }
 
-    .modal-stat-val { font-size: 1.35rem; font-weight: 900; letter-spacing: -0.5px; }
+    .modal-stat-val { font-size: 1.35rem; font-weight: 600; letter-spacing: -0.5px; }
     .modal-stat-label { font-size: 0.67rem; color: var(--muted); margin-top: 0.15rem; }
 
     #modal-cta {
@@ -1199,7 +1228,7 @@
       text-align: center;
       font-size: 0.9rem;
       padding: 0.875rem;
-      border-radius: var(--r-pill);
+      border-radius: var(--r-sm);
       border: none;
     }
 
@@ -1218,20 +1247,7 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 80" fill="none" role="img" aria-label="Groundswell">
-      <defs>
-        <linearGradient id="wGN" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#6c5ef6"/>
-          <stop offset="100%" stop-color="#00c8ff"/>
-        </linearGradient>
-      </defs>
-      <path d="M4,68 Q16,50 28,68" stroke="url(#wGN)" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-      <path d="M20,68 Q38,36 56,68" stroke="url(#wGN)" stroke-width="3.5" stroke-linecap="round" opacity="0.7"/>
-      <path d="M44,68 Q68,10 92,68" stroke="url(#wGN)" stroke-width="4" stroke-linecap="round"/>
-      <line x1="0" y1="72" x2="96" y2="72" stroke="url(#wGN)" stroke-width="1.5" opacity="0.2"/>
-      <text x="108" y="56" font-family="Inter, sans-serif" font-weight="800" font-size="36" letter-spacing="-1.5" fill="#09090e">Groundswell</text>
-      <text x="109" y="72" font-family="Inter, sans-serif" font-weight="600" font-size="10.5" letter-spacing="3" fill="#6c5ef6" opacity="0.8">AI-POWERED GROWTH</text>
-    </svg>
+    <img src="orbitloop-wordmark.svg" alt="OrbitLoop" style="height: 60px; width: auto;" />
   </div>
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
@@ -1271,7 +1287,7 @@
               <div class="hp-dot" style="background:#febc2e"></div>
               <div class="hp-dot" style="background:#28c840"></div>
             </div>
-            <div class="hp-url">groundswell.app/dashboard</div>
+            <div class="hp-url">orbitloop.app/dashboard</div>
           </div>
           <div class="hp-body">
             <div class="hp-heading">
@@ -1280,37 +1296,37 @@
             </div>
 
             <div class="hp-row">
-              <div class="hp-icon" style="background:rgba(108,94,246,0.10);">🎯</div>
+              <div class="hp-icon" style="background:rgba(204,120,92,0.15);">🎯</div>
               <div class="hp-info">
                 <div class="hp-name">Lead Engine</div>
-                <div class="hp-bar"><div class="hp-bar-fill" style="width:85%;background:linear-gradient(90deg,#6c5ef6,#00c8ff)"></div></div>
+                <div class="hp-bar"><div class="hp-bar-fill" style="width:85%;background:linear-gradient(90deg,#cc785c,#a9583e)"></div></div>
               </div>
               <div class="hp-stat">
-                <div class="hp-stat-num" style="color:#6c5ef6">23+</div>
+                <div class="hp-stat-num" style="color:#cc785c">23+</div>
                 <div class="hp-stat-label">prospects / wk</div>
               </div>
             </div>
 
             <div class="hp-row">
-              <div class="hp-icon" style="background:rgba(255,77,158,0.10);">⭐</div>
+              <div class="hp-icon" style="background:rgba(93,184,114,0.15);">⭐</div>
               <div class="hp-info">
                 <div class="hp-name">Review System</div>
-                <div class="hp-bar"><div class="hp-bar-fill" style="width:100%;background:linear-gradient(90deg,#ff4d9e,#6c5ef6)"></div></div>
+                <div class="hp-bar"><div class="hp-bar-fill" style="width:100%;background:#cc785c"></div></div>
               </div>
               <div class="hp-stat">
-                <div class="hp-stat-num" style="color:#ff4d9e">12</div>
+                <div class="hp-stat-num" style="color:#5db872">12</div>
                 <div class="hp-stat-label">responses / day</div>
               </div>
             </div>
 
             <div class="hp-row">
-              <div class="hp-icon" style="background:rgba(0,200,255,0.10);">✍️</div>
+              <div class="hp-icon" style="background:rgba(204,120,92,0.10);">✍️</div>
               <div class="hp-info">
                 <div class="hp-name">SEO Engine</div>
-                <div class="hp-bar"><div class="hp-bar-fill" style="width:68%;background:linear-gradient(90deg,#00c8ff,#6c5ef6)"></div></div>
+                <div class="hp-bar"><div class="hp-bar-fill" style="width:68%;background:#a9583e"></div></div>
               </div>
               <div class="hp-stat">
-                <div class="hp-stat-num" style="color:#00a8d6">4</div>
+                <div class="hp-stat-num" style="color:#a09d96">4</div>
                 <div class="hp-stat-label">articles queued</div>
               </div>
             </div>
@@ -1319,7 +1335,7 @@
               <div class="hp-icon" style="background:rgba(255,170,0,0.10);">🔁</div>
               <div class="hp-info">
                 <div class="hp-name">Reactivation</div>
-                <div class="hp-bar"><div class="hp-bar-fill" style="width:45%;background:linear-gradient(90deg,#ffaa00,#ff4d9e)"></div></div>
+                <div class="hp-bar"><div class="hp-bar-fill" style="width:45%;background:linear-gradient(90deg,#ffaa00,#e8a55a)"></div></div>
               </div>
               <div class="hp-stat">
                 <div class="hp-stat-num" style="color:#cc8800">7</div>
@@ -1332,15 +1348,15 @@
         <!-- Summary strip -->
         <div class="hp-summary">
           <div class="hps-item">
-            <div class="hps-num" style="color:#6c5ef6">90%</div>
+            <div class="hps-num" style="color:#cc785c">90%</div>
             <div class="hps-label">Gross Margin</div>
           </div>
           <div class="hps-item">
-            <div class="hps-num" style="color:#1db954">24/7</div>
+            <div class="hps-num" style="color:#5db872">24/7</div>
             <div class="hps-label">Uptime</div>
           </div>
           <div class="hps-item">
-            <div class="hps-num" style="color:#ff4d9e">4×</div>
+            <div class="hps-num" style="color:#cc785c">4×</div>
             <div class="hps-label">Systems</div>
           </div>
           <div class="hps-item">
@@ -1478,16 +1494,16 @@
         <!-- Mini bar chart -->
         <div style="margin-top:1.25rem;display:flex;flex-direction:column;gap:0.4rem;">
           <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:var(--muted)">
-            <div style="flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden"><div style="width:85%;height:100%;background:var(--violet);border-radius:3px"></div></div> Lead
+            <div style="flex:1;height:5px;background:var(--surface);border-radius:3px;overflow:hidden"><div style="width:85%;height:100%;background:#cc785c;border-radius:3px"></div></div> Lead
           </div>
           <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:var(--muted)">
-            <div style="flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden"><div style="width:100%;height:100%;background:#ff4d9e;border-radius:3px"></div></div> Review
+            <div style="flex:1;height:5px;background:var(--surface);border-radius:3px;overflow:hidden"><div style="width:100%;height:100%;background:#5db872;border-radius:3px"></div></div> Review
           </div>
           <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:var(--muted)">
-            <div style="flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden"><div style="width:68%;height:100%;background:#00c8ff;border-radius:3px"></div></div> SEO
+            <div style="flex:1;height:5px;background:var(--surface);border-radius:3px;overflow:hidden"><div style="width:68%;height:100%;background:#a9583e;border-radius:3px"></div></div> SEO
           </div>
           <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:var(--muted)">
-            <div style="flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden"><div style="width:45%;height:100%;background:#ffaa00;border-radius:3px"></div></div> Reactivation
+            <div style="flex:1;height:5px;background:var(--surface);border-radius:3px;overflow:hidden"><div style="width:45%;height:100%;background:#ffaa00;border-radius:3px"></div></div> Reactivation
           </div>
         </div>
       </div>
@@ -1509,7 +1525,7 @@
           <!-- Foreground arc (84%) -->
           <path d="M20,80 A60,60 0 0,1 140,80" fill="none" stroke="url(#arcG)" stroke-width="10" stroke-linecap="round"
                 stroke-dasharray="189" stroke-dashoffset="30" />
-          <text x="80" y="72" text-anchor="middle" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="white">84%</text>
+          <text x="80" y="72" text-anchor="middle" font-family="Inter,sans-serif" font-weight="500" font-size="22" fill="white">84%</text>
           <text x="80" y="86" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">avg. system utilization</text>
         </svg>
       </div>
@@ -1588,15 +1604,15 @@
           <div class="mockup-dot" style="background:#febc2e"></div>
           <div class="mockup-dot" style="background:#28c840"></div>
         </div>
-        <div class="mockup-label">Groundswell System Dashboard</div>
+        <div class="mockup-label">Orbit Loop System Dashboard</div>
 
         <div class="dash-row" data-modal="lead" tabindex="0" role="button" aria-label="Learn about Lead Engine">
           <div class="dash-row-header">
             <div class="dh-label">LEAD ENGINE — Active</div>
             <span class="dash-arrow">›</span>
           </div>
-          <div class="dash-bar"><div class="dash-bar-fill" style="width:85%;background:linear-gradient(90deg,#6c5ef6,#00c8ff)"></div></div>
-          <div class="dash-stat" style="color:#6c5ef6">↑ 23 new prospects this week</div>
+          <div class="dash-bar"><div class="dash-bar-fill" style="width:85%;background:linear-gradient(90deg,#cc785c,#a9583e)"></div></div>
+          <div class="dash-stat" style="color:#cc785c">↑ 23 new prospects this week</div>
         </div>
 
         <div class="dash-row" data-modal="review" tabindex="0" role="button" aria-label="Learn about Review System">
@@ -1604,8 +1620,8 @@
             <div class="dh-label">REVIEW SYSTEM — Active</div>
             <span class="dash-arrow">›</span>
           </div>
-          <div class="dash-bar"><div class="dash-bar-fill" style="width:100%;background:linear-gradient(90deg,#ff4d9e,#6c5ef6)"></div></div>
-          <div class="dash-stat" style="color:#ff4d9e">↑ 12 responses sent today</div>
+          <div class="dash-bar"><div class="dash-bar-fill" style="width:100%;background:#cc785c"></div></div>
+          <div class="dash-stat" style="color:#5db872">↑ 12 responses sent today</div>
         </div>
 
         <div class="dash-row" data-modal="seo" tabindex="0" role="button" aria-label="Learn about SEO Engine">
@@ -1613,8 +1629,8 @@
             <div class="dh-label">SEO ENGINE — Publishing</div>
             <span class="dash-arrow">›</span>
           </div>
-          <div class="dash-bar"><div class="dash-bar-fill" style="width:68%;background:linear-gradient(90deg,#00c8ff,#6c5ef6)"></div></div>
-          <div class="dash-stat" style="color:#00a8d6">↑ 4 articles queued</div>
+          <div class="dash-bar"><div class="dash-bar-fill" style="width:68%;background:#a9583e"></div></div>
+          <div class="dash-stat" style="color:#6c6a64">↑ 4 articles queued</div>
         </div>
 
         <div class="dash-row" data-modal="reactivation" tabindex="0" role="button" aria-label="Learn about Reactivation">
@@ -1622,7 +1638,7 @@
             <div class="dh-label">REACTIVATION — Running</div>
             <span class="dash-arrow">›</span>
           </div>
-          <div class="dash-bar"><div class="dash-bar-fill" style="width:45%;background:linear-gradient(90deg,#ffaa00,#ff4d9e)"></div></div>
+          <div class="dash-bar"><div class="dash-bar-fill" style="width:45%;background:linear-gradient(90deg,#ffaa00,#e8a55a)"></div></div>
           <div class="dash-stat" style="color:#cc8800">↑ 7 past clients re-engaged</div>
         </div>
 
@@ -1652,7 +1668,7 @@
           <div class="wm-quote">
             "Small businesses are the backbone of every community. They just deserve <em>better tools</em> — tools that used to cost $50k/month and a full agency. We deliver those same results at a price that makes sense."
           </div>
-          <div class="wm-attr">— Groundswell, Founded 2024</div>
+          <div class="wm-attr">— Orbit Loop, Founded 2024</div>
         </div>
 
         <div class="who-stats">
@@ -1674,7 +1690,7 @@
       <!-- Right col: values -->
       <div class="who-values fade-in">
         <div class="wv-item">
-          <div class="wv-icon" style="background:var(--v10);">🎯</div>
+          <div class="wv-icon" style="background:rgba(255,255,255,0.15);">🎯</div>
           <div>
             <h4>Built for the underdog</h4>
             <p>We work exclusively with small and independent businesses — local shops, service providers, solo operators, and growing startups who want enterprise-level output without the enterprise price tag.</p>
@@ -1682,7 +1698,7 @@
         </div>
 
         <div class="wv-item">
-          <div class="wv-icon" style="background:var(--g10);">📈</div>
+          <div class="wv-icon" style="background:rgba(255,255,255,0.15);">📈</div>
           <div>
             <h4>Results that compound</h4>
             <p>We don't do one-off campaigns. Every system we build stacks on the last — leads feed reviews, reviews boost SEO, SEO reactivates past customers. Over time, the flywheel spins itself.</p>
@@ -1690,7 +1706,7 @@
         </div>
 
         <div class="wv-item">
-          <div class="wv-icon" style="background:rgba(255,170,0,0.12);">🤝</div>
+          <div class="wv-icon" style="background:rgba(255,255,255,0.15);">🤝</div>
           <div>
             <h4>Radical transparency</h4>
             <p>You own your systems, your data, and your results. No black boxes. We show you exactly what's running, what it's producing, and where every dollar of ROI is coming from.</p>
@@ -1698,7 +1714,7 @@
         </div>
 
         <div class="wv-item">
-          <div class="wv-icon" style="background:rgba(255,77,158,0.10);">🌱</div>
+          <div class="wv-icon" style="background:rgba(255,255,255,0.15);">🌱</div>
           <div>
             <h4>Your growth is our mission</h4>
             <p>We succeed when you do. Our goal isn't to lock you into a retainer forever — it's to build systems so effective that growth becomes the new normal for your business.</p>
@@ -1766,23 +1782,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="nav-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 80" fill="none" aria-label="Groundswell">
-      <defs>
-        <linearGradient id="wGF" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#6c5ef6"/>
-          <stop offset="100%" stop-color="#00c8ff"/>
-        </linearGradient>
-      </defs>
-      <path d="M4,68 Q16,50 28,68" stroke="url(#wGF)" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-      <path d="M20,68 Q38,36 56,68" stroke="url(#wGF)" stroke-width="3.5" stroke-linecap="round" opacity="0.7"/>
-      <path d="M44,68 Q68,10 92,68" stroke="url(#wGF)" stroke-width="4" stroke-linecap="round"/>
-      <line x1="0" y1="72" x2="96" y2="72" stroke="url(#wGF)" stroke-width="1.5" opacity="0.2"/>
-      <text x="108" y="56" font-family="Inter, sans-serif" font-weight="800" font-size="36" letter-spacing="-1.5" fill="#09090e">Groundswell</text>
-      <text x="109" y="72" font-family="Inter, sans-serif" font-weight="600" font-size="10.5" letter-spacing="3" fill="#6c5ef6" opacity="0.8">AI-POWERED GROWTH</text>
-    </svg>
-  </div>
-  <p>© 2026 Groundswell. All rights reserved.</p>
+  <p>© 2026 Orbit Loop. All rights reserved.</p>
   <p>Built for margins. Runs on autopilot.</p>
 </footer>
 
@@ -1816,70 +1816,70 @@
   const modalData = {
     lead: {
       badge: '🎯 Lead Generation Engine',
-      badgeColor: 'rgba(108,94,246,0.10)',
-      badgeText: '#6c5ef6',
+      badgeColor: 'rgba(204,120,92,0.10)',
+      badgeText: '#cc785c',
       title: 'Lead Generation Engine',
       subtitle: 'An AI-powered outreach system that identifies your ideal prospects, writes hyper-personalized messages, and books calls on your calendar — around the clock, without a sales team.',
       steps: [
-        { num: '01', color: '#6c5ef6', bg: 'rgba(108,94,246,0.10)', title: 'Prospect Discovery', body: 'Our AI scans your target market to find businesses or individuals who match your ideal customer profile — industry, size, location, and intent signals.' },
-        { num: '02', color: '#00a8d6', bg: 'rgba(0,200,255,0.10)', title: 'Personalized Outreach', body: 'For each prospect, the AI crafts a unique message referencing their specific business context — no templates, no spam. Every message feels hand-written.' },
-        { num: '03', color: '#ff4d9e', bg: 'rgba(255,77,158,0.10)', title: 'Automated Follow-Up', body: 'Multi-step sequences run automatically — follow-ups, value adds, and soft CTAs — until the prospect replies or books a call. Zero manual effort.' },
+        { num: '01', color: '#cc785c', bg: 'rgba(204,120,92,0.10)', title: 'Prospect Discovery', body: 'Our AI scans your target market to find businesses or individuals who match your ideal customer profile — industry, size, location, and intent signals.' },
+        { num: '02', color: '#a9583e', bg: 'rgba(169,88,62,0.10)', title: 'Personalized Outreach', body: 'For each prospect, the AI crafts a unique message referencing their specific business context — no templates, no spam. Every message feels hand-written.' },
+        { num: '03', color: '#5db872', bg: 'rgba(93,184,114,0.12)', title: 'Automated Follow-Up', body: 'Multi-step sequences run automatically — follow-ups, value adds, and soft CTAs — until the prospect replies or books a call. Zero manual effort.' },
       ],
       stats: [
-        { val: '23+', label: 'Prospects/Week', color: '#6c5ef6' },
-        { val: '24/7', label: 'Always Running', color: '#00a8d6' },
-        { val: '~0h', label: 'Manual Work', color: '#ff4d9e' },
+        { val: '23+', label: 'Prospects/Week', color: '#cc785c' },
+        { val: '24/7', label: 'Always Running', color: '#6c6a64' },
+        { val: '~0h', label: 'Manual Work', color: '#5db872' },
       ],
     },
     review: {
       badge: '⭐ Review Response System',
-      badgeColor: 'rgba(255,77,158,0.10)',
-      badgeText: '#ff4d9e',
+      badgeColor: 'rgba(93,184,114,0.12)',
+      badgeText: '#5db872',
       title: 'Review Response System',
       subtitle: 'Every Google, Yelp, or platform review answered within minutes with a brand-perfect response. Protect your reputation and build trust at scale.',
       steps: [
-        { num: '01', color: '#ff4d9e', bg: 'rgba(255,77,158,0.10)', title: 'Real-Time Monitoring', body: 'The system watches your review platforms 24/7. The moment a new review lands, it\'s analyzed for tone, content, and context automatically.' },
-        { num: '02', color: '#6c5ef6', bg: 'rgba(108,94,246,0.10)', title: 'Brand-Voice Response', body: 'Our AI generates a response tuned to your brand — warm for positives, empathetic and de-escalating for negatives. No robotic copy-paste.' },
-        { num: '03', color: '#00a8d6', bg: 'rgba(0,200,255,0.10)', title: 'SEO Boost', body: 'Active, consistent review responses are a Google ranking signal. Every reply contributes to your local SEO footprint automatically.' },
+        { num: '01', color: '#5db872', bg: 'rgba(93,184,114,0.12)', title: 'Real-Time Monitoring', body: 'The system watches your review platforms 24/7. The moment a new review lands, it\'s analyzed for tone, content, and context automatically.' },
+        { num: '02', color: '#cc785c', bg: 'rgba(204,120,92,0.10)', title: 'Brand-Voice Response', body: 'Our AI generates a response tuned to your brand — warm for positives, empathetic and de-escalating for negatives. No robotic copy-paste.' },
+        { num: '03', color: '#a9583e', bg: 'rgba(169,88,62,0.10)', title: 'SEO Boost', body: 'Active, consistent review responses are a Google ranking signal. Every reply contributes to your local SEO footprint automatically.' },
       ],
       stats: [
-        { val: '12+', label: 'Responses/Day', color: '#ff4d9e' },
-        { val: '<5min', label: 'Response Time', color: '#6c5ef6' },
-        { val: '100%', label: 'Reviews Covered', color: '#00a8d6' },
+        { val: '12+', label: 'Responses/Day', color: '#5db872' },
+        { val: '<5min', label: 'Response Time', color: '#cc785c' },
+        { val: '100%', label: 'Reviews Covered', color: '#a9583e' },
       ],
     },
     seo: {
       badge: '✍️ SEO Content Engine',
-      badgeColor: 'rgba(0,200,255,0.10)',
-      badgeText: '#0090b8',
+      badgeColor: 'rgba(204,120,92,0.10)',
+      badgeText: '#a9583e',
       title: 'SEO Content Engine',
       subtitle: 'A fully automated content machine that researches keywords, writes optimized articles and landing pages, and publishes on schedule — a full content team at a fraction of the cost.',
       steps: [
-        { num: '01', color: '#0090b8', bg: 'rgba(0,144,184,0.10)', title: 'Keyword Research', body: 'The system identifies high-intent, low-competition keywords in your niche — the exact terms your ideal customers search before buying.' },
-        { num: '02', color: '#6c5ef6', bg: 'rgba(108,94,246,0.10)', title: 'AI Content Writing', body: 'Our AI writes long-form, authoritative articles structured for Google — proper headings, FAQs, internal links, and calls to action all included.' },
-        { num: '03', color: '#ff4d9e', bg: 'rgba(255,77,158,0.10)', title: 'Scheduled Publishing', body: 'Content is queued and published on a consistent cadence. Consistency is the #1 ranking factor most businesses fail — we handle it automatically.' },
+        { num: '01', color: '#a9583e', bg: 'rgba(169,88,62,0.10)', title: 'Keyword Research', body: 'The system identifies high-intent, low-competition keywords in your niche — the exact terms your ideal customers search before buying.' },
+        { num: '02', color: '#cc785c', bg: 'rgba(204,120,92,0.10)', title: 'AI Content Writing', body: 'Our AI writes long-form, authoritative articles structured for Google — proper headings, FAQs, internal links, and calls to action all included.' },
+        { num: '03', color: '#5db872', bg: 'rgba(93,184,114,0.12)', title: 'Scheduled Publishing', body: 'Content is queued and published on a consistent cadence. Consistency is the #1 ranking factor most businesses fail — we handle it automatically.' },
       ],
       stats: [
-        { val: '4+', label: 'Articles/Week', color: '#0090b8' },
-        { val: '2k+', label: 'Words Each', color: '#6c5ef6' },
-        { val: '↑SEO', label: 'Monthly Growth', color: '#ff4d9e' },
+        { val: '4+', label: 'Articles/Week', color: '#a9583e' },
+        { val: '2k+', label: 'Words Each', color: '#cc785c' },
+        { val: '↑SEO', label: 'Monthly Growth', color: '#5db872' },
       ],
     },
     reactivation: {
       badge: '🔁 Customer Reactivation',
-      badgeColor: 'rgba(255,170,0,0.12)',
-      badgeText: '#b87800',
+      badgeColor: 'rgba(232,165,90,0.15)',
+      badgeText: '#cc785c',
       title: 'Customer Reactivation',
       subtitle: 'Your past customers are your highest-converting, lowest-cost sales opportunity. AI sequences re-engage dormant buyers with personalized offers they can\'t ignore.',
       steps: [
         { num: '01', color: '#cc8800', bg: 'rgba(255,170,0,0.10)', title: 'Dormant Customer Audit', body: 'The system identifies past customers and leads who went quiet — segmented by recency, purchase history, and likelihood to return.' },
-        { num: '02', color: '#6c5ef6', bg: 'rgba(108,94,246,0.10)', title: 'Personalized Re-Engagement', body: 'Our AI crafts messages referencing their history with you — not generic blasts. Each message feels like a personal check-in with a timely offer.' },
-        { num: '03', color: '#ff4d9e', bg: 'rgba(255,77,158,0.10)', title: 'Offer Sequencing', body: 'Multi-step sequences escalate from soft re-engagement to a clear offer over days — optimized timing that maximizes conversions without being pushy.' },
+        { num: '02', color: '#cc785c', bg: 'rgba(204,120,92,0.10)', title: 'Personalized Re-Engagement', body: 'Our AI crafts messages referencing their history with you — not generic blasts. Each message feels like a personal check-in with a timely offer.' },
+        { num: '03', color: '#5db872', bg: 'rgba(93,184,114,0.12)', title: 'Offer Sequencing', body: 'Multi-step sequences escalate from soft re-engagement to a clear offer over days — optimized timing that maximizes conversions without being pushy.' },
       ],
       stats: [
         { val: '7+', label: 'Re-engaged/Week', color: '#cc8800' },
-        { val: '5×', label: 'vs. Cold Outreach', color: '#6c5ef6' },
-        { val: '↑LTV', label: 'Per Customer', color: '#ff4d9e' },
+        { val: '5×', label: 'vs. Cold Outreach', color: '#cc785c' },
+        { val: '↑LTV', label: 'Per Customer', color: '#5db872' },
       ],
     },
   };
